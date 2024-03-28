@@ -133,18 +133,19 @@ layers = [icon_layer]
 # Specify a deck.gl ArcLayer
 if st.sidebar.checkbox("Show Expedition Arcs"):
     arc_layer = pdk.Layer(
-                            "ArcLayer",
+                            "GreatCircleLayer",
                             data=df_expedition,
-                            greatCircle=True,
-                            get_width="S000 * 2",
-                            getHeight=0.5,
+                            # greatCircle=True,
+                            get_stroke_width=12,
+                            # get_width="S000 * 2",
+                            # getHeight=0.5,
                             get_source_position=["lon", "lat"],
                             get_target_position=["lon_dest", "lat_dest"],
-                            get_tilt=-45,
+                            # get_tilt=-45,
                             get_source_color=[0, 255, 0, 255],
                             get_target_color=[240, 100, 0, 255],
-                            pickable=False,
-                            auto_highlight=False,
+                            pickable=True,
+                            auto_highlight=True,
                         )
     layers = [icon_layer, arc_layer]
 
@@ -157,6 +158,8 @@ chart = pdk.Deck(
     tooltip=tooltip,
     # tooltip=True,
     )
+
+chart.picking_radius = 10
 st.components.v1.html(chart.to_html(as_string=True), height=700) 
 
 
