@@ -2,10 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pydeck as pdk
+from datetime import datetime
 # from geocode import update_data
 
 # page config
-st.set_page_config("KT Travel Map", page_icon="🍊", layout="wide")
+st.set_page_config("KT Travel Map", page_icon="🍊", layout="wide", initial_sidebar_state="collapsed")
 
 # reduce top margin
 st.markdown("""
@@ -70,20 +71,33 @@ tooltip = {
    }
 }
 
+# side bar
+st.sidebar.markdown("## About")
+# st.sidebar.write("This is a fan-made project. Data is acquired from https://kyototachibanashsbandunofficialfanblog.wordpress.com/")
+
 
 
 # main
 st.title("Kyoto Tachibana SHS Band Travel Map")
 
+# date range setting
+date_range = data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to_pydatetime()
+
+# showing max date range compresses more recent events to a short window
+if st.checkbox("Hide events before 2012"):
+    date_range = datetime.strptime("20120101", "%Y%m%d"), data['timestamp'].max().to_pydatetime()
+
 # select data by time
 start_date, end_date = st.slider(
     'Select date range',
     # options=data['timestamp'],
-    value=(data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to_pydatetime()),
+    value=date_range,
     format="MM/DD/YY",
     )
 mask = (data['timestamp'] >= start_date) & (data['timestamp'] <= end_date)
 df_selected = data.loc[mask]
+
+
 
 # school centered
 # backup ini view
