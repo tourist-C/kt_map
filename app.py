@@ -14,12 +14,15 @@ import streamlit as st
 # )
 
 # Add custom CSS to hide the GitHub icon
-hide_github_icon = """
-#stActionButtonIcon {
-  visibility: hidden;
-}
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+st.markdown(
+    """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # <div data-testid="stActionButtonIcon" class="st-emotion-cache-q16mip e3g6aar1"></div>
