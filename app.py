@@ -65,7 +65,7 @@ tooltip = {
 #    + f"{html_youtube_embed}", # disabled until we have a better database
 
    "style": {
-        "backgroundColor": "steelblue",
+        "backgroundColor": "black",
         "color": "white"
    }
 }
