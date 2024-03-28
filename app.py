@@ -40,6 +40,8 @@ data.dropna(inplace=True)
 data['timestamp'] = pd.to_datetime(data.date)
 ICON_URL = "https://static-00.iconduck.com/assets.00/tangerine-emoji-512x510-bjsdm1qw.png"
 
+df_expedition = pd.read_csv("expeditions.csv")
+
 # custom map icon
 icon_data = {
     # Icon from Wikimedia, used the Creative Commons Attribution-Share Alike 3.0
@@ -72,9 +74,10 @@ tooltip = {
 }
 
 # side bar
-st.sidebar.markdown("## About")
+# st.sidebar.markdown("## About")
 # st.sidebar.write("This is a fan-made project. Data is acquired from https://kyototachibanashsbandunofficialfanblog.wordpress.com/")
 
+st.sidebar.markdown("## Options")
 
 
 # main
@@ -84,7 +87,7 @@ st.title("Kyoto Tachibana SHS Band Travel Map")
 date_range = data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to_pydatetime()
 
 # showing max date range compresses more recent events to a short window
-if st.checkbox("Hide events before 2012"):
+if st.sidebar.checkbox("Hide events before 2012"):
     date_range = datetime.strptime("20120101", "%Y%m%d"), data['timestamp'].max().to_pydatetime()
 
 # select data by time
@@ -115,23 +118,42 @@ else:
     st.info("ℹ    There is no event in your selected date range. Try again with a wider selection")
 
 
+icon_layer = pdk.Layer(
+                    type="IconLayer",
+                    data=df_selected,
+                    get_icon="icon_data",
+                    get_size=4,
+                    size_scale=4,
+                    get_position=["lon", "lat"],
+                    pickable=True,
+                )
+
+layers = [icon_layer]
+
+# Specify a deck.gl ArcLayer
+if st.sidebar.checkbox("Show Expedition Arcs"):
+    arc_layer = pdk.Layer(
+                            "ArcLayer",
+                            data=df_expedition,
+                            greatCircle=True,
+                            get_width="S000 * 2",
+                            getHeight=0.5,
+                            get_source_position=["lon", "lat"],
+                            get_target_position=["lon_dest", "lat_dest"],
+                            get_tilt=-45,
+                            get_source_color=[0, 255, 0, 255],
+                            get_target_color=[240, 100, 0, 255],
+                            pickable=False,
+                            auto_highlight=False,
+                        )
+    layers = [icon_layer, arc_layer]
+
 # map object
 chart = pdk.Deck(
     map_style='light',
     map_provider ="carto",
     initial_view_state=initial_view_state,
-    layers=[
-        pdk.Layer(
-            type="IconLayer",
-            data=df_selected,
-            get_icon="icon_data",
-            get_size=4,
-            size_scale=4,
-            get_position=["lon", "lat"],
-            pickable=True,
-        ),
-
-    ],
+    layers=layers,
     tooltip=tooltip,
     # tooltip=True,
     )
