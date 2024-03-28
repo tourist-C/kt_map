@@ -6,7 +6,7 @@ from datetime import datetime
 # from geocode import update_data
 
 # page config
-st.set_page_config("KT Travel Map", page_icon="🍊", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config("🗺️ KT Travel Map", page_icon="🍊", layout="wide", initial_sidebar_state="collapsed")
 
 # reduce top margin
 st.markdown("""
