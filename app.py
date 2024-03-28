@@ -86,20 +86,26 @@ mask = (data['timestamp'] >= start_date) & (data['timestamp'] <= end_date)
 df_selected = data.loc[mask]
 
 # school centered
-# initial_view_state=pdk.ViewState(
-#     latitude=34.9321689,
-#     longitude=135.7785686,
-#     zoom=5,
-#     pitch=0,
-# )
+# backup ini view
+initial_view_state=pdk.ViewState(
+    latitude=34.9321689,
+    longitude=135.7785686,
+    zoom=5,
+    pitch=0,
+)
 
+# good view, but breaks if slider selected range with no data
+if len(df_selected) != 0:
+    initial_view_state = pdk.data_utils.viewport_helpers.compute_view(df_selected[['lon', 'lat']])
+else:
+    st.info("ℹ    There is no event in your selected date range. Try again with a wider selection")
 
 
 # map object
 chart = pdk.Deck(
     map_style='light',
     map_provider ="carto",
-    initial_view_state=pdk.data_utils.viewport_helpers.compute_view(df_selected[['lon', 'lat']]),
+    initial_view_state=initial_view_state,
     layers=[
         pdk.Layer(
             type="IconLayer",
