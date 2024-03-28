@@ -87,7 +87,8 @@ df_selected = data.loc[mask]
 
 # map object
 chart = pdk.Deck(
-    map_style='road',
+    map_style='light',
+    map_provider ="carto",
     initial_view_state=pdk.ViewState(
         latitude=34.9321689,
         longitude=135.7785686,
@@ -103,10 +104,11 @@ chart = pdk.Deck(
             size_scale=4,
             get_position=["lon", "lat"],
             pickable=True,
-        )
+        ),
 
     ],
     tooltip=tooltip,
+    # tooltip=True,
     )
 st.components.v1.html(chart.to_html(as_string=True), height=700) 
 
