@@ -82,19 +82,24 @@ start_date, end_date = st.slider(
     value=(data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to_pydatetime()),
     format="MM/DD/YY",
     )
-mask = (data['timestamp'] > start_date) & (data['timestamp'] <= end_date)
+mask = (data['timestamp'] >= start_date) & (data['timestamp'] <= end_date)
 df_selected = data.loc[mask]
+
+# school centered
+# initial_view_state=pdk.ViewState(
+#     latitude=34.9321689,
+#     longitude=135.7785686,
+#     zoom=5,
+#     pitch=0,
+# )
+
+
 
 # map object
 chart = pdk.Deck(
     map_style='light',
     map_provider ="carto",
-    initial_view_state=pdk.ViewState(
-        latitude=34.9321689,
-        longitude=135.7785686,
-        zoom=5,
-        pitch=0,
-    ),
+    initial_view_state=pdk.data_utils.viewport_helpers.compute_view(df_selected[['lon', 'lat']]),
     layers=[
         pdk.Layer(
             type="IconLayer",
