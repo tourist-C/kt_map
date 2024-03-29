@@ -80,8 +80,14 @@ tooltip = {
 st.sidebar.markdown("## Options")
 
 
+
+
+
+
 # main
 st.title("Kyoto Tachibana SHS Band Travel Map")
+st.markdown("### BETA - Some data may be inaccurate")
+
 
 # date range setting
 date_range = data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to_pydatetime()
@@ -89,6 +95,18 @@ date_range = data['timestamp'].min().to_pydatetime(), data['timestamp'].max().to
 # showing max date range compresses more recent events to a short window
 if st.sidebar.checkbox("Hide events before 2012"):
     date_range = datetime.strptime("20120101", "%Y%m%d"), data['timestamp'].max().to_pydatetime()
+
+
+# c1, c2, c3, c4, c5 = st.columns(5)
+# c1.checkbox('114')
+# c2.checkbox('115')
+# c3.checkbox('116')
+# c4.checkbox('117')
+# c5.checkbox('118')
+
+
+
+
 
 # select data by time
 start_date, end_date = st.slider(
