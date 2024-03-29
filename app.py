@@ -33,6 +33,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# reduce side bar margin
+# st.markdown("""
+#   <style>
+#     .css-znku1x.e16nr0p33 {
+#       margin-top: -75px;
+#     }
+#   </style>
+# """, unsafe_allow_html=True)
+st.markdown(" <style> div[class^='st-emotion-cache-10oheav'] { padding-top: 0rem; padding-left: 0rem; padding-rigth: 0rem;} </style> ", unsafe_allow_html=True)
+
 # init data
 csv = "data.csv"
 data = pd.read_csv(csv)
@@ -86,7 +96,7 @@ st.sidebar.markdown("## Options")
 
 # main
 st.title("Kyoto Tachibana SHS Band Travel Map")
-st.markdown("### BETA - Some data may be inaccurate")
+st.markdown("###### *[BETA] - This site is under active development, some data may be inaccurate or incomplete*")
 
 
 # date range setting
@@ -167,6 +177,7 @@ if st.sidebar.checkbox("Show Expedition Arcs"):
                         )
     layers = [icon_layer, arc_layer]
 
+
 # map object
 chart = pdk.Deck(
     map_style='light',
@@ -178,7 +189,7 @@ chart = pdk.Deck(
     )
 
 chart.picking_radius = 10
-st.components.v1.html(chart.to_html(as_string=True), height=700) 
+st.components.v1.html(chart.to_html(as_string=True), height=650) 
 
 
 
