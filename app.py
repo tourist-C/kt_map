@@ -37,7 +37,7 @@ st.markdown(
 csv = "data.csv"
 data = pd.read_csv(csv)
 data.dropna(inplace=True)
-data['timestamp'] = pd.to_datetime(data.date)
+data['timestamp'] = pd.to_datetime(data.date, format='mixed')
 ICON_URL = "https://static-00.iconduck.com/assets.00/tangerine-emoji-512x510-bjsdm1qw.png"
 
 df_expedition = pd.read_csv("expeditions.csv")
